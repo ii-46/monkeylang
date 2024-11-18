@@ -26,3 +26,15 @@ const (
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
 )
+
+var keywords = map[string]TokenType{
+	"let": LET,
+	"fn":  FUNCTION,
+}
+
+func LookupIndent(indent string) TokenType {
+	if tokenType, ok := keywords[indent]; ok {
+		return tokenType
+	}
+	return IDENT
+}
