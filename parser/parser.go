@@ -56,6 +56,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 	return program
 }
 
+// --------------------------- parse statement --------------------------- //
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.curToken.Type {
 	case token.LET:
@@ -93,6 +94,21 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 		p.nextToken()
 	}
 	return stmt
+}
+
+// ------------------------------ parse expression ------------------------------ //
+type (
+	prefixParseFn func() ast.Expression
+
+	// arg is the “left side” of the infix
+	infixParseFn func(ast.Expression) ast.Expression
+)
+
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
+}
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
 }
 
 // ------------------------------ helper ------------------------------ //
