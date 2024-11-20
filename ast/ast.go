@@ -50,3 +50,6 @@ type LetStatement struct {
 func (l *LetStatement) TokenLiteral() string {
 	return l.Token.Literal
 }
+
+func (l *LetStatement) statementNode() {
+}
